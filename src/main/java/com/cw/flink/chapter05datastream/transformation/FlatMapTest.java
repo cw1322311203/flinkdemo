@@ -8,9 +8,13 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.util.Collector;
 
 /**
- * @description:
- * @author:chenwei
- * @date:2022/9/1 15:11
+ * @description: flatMap 并没有直接定义返回值类型，而是通过一个“收集器”（Collector）来指定输出。
+ * 希望输出结果时，只要调用收集器的.collect()方法就可以了；
+ * 这个方法可以多次调用，也可以不调用。所以 flatMap 方法也可以实现 map 方法和 filter 方
+ * 法的功能，当返回结果是 0 个的时候，就相当于对数据进行了过滤，
+ * 当返回结果是 1 个的时候，相当于对数据进行了简单的转换操作。
+ * @author: chenwei
+ * @date: 2022/9/1 15:11
  */
 public class FlatMapTest {
     public static void main(String[] args) throws Exception {
