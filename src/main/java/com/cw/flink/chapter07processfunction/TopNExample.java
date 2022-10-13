@@ -1,4 +1,4 @@
-package com.cw.flink.chapter07;
+package com.cw.flink.chapter07processfunction;
 
 import com.cw.flink.chapter05datastream.source.ClickSource;
 import com.cw.flink.chapter05datastream.source.Event;
@@ -9,7 +9,6 @@ import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.common.state.ListState;
 import org.apache.flink.api.common.state.ListStateDescriptor;
 import org.apache.flink.api.common.typeinfo.Types;
-import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;

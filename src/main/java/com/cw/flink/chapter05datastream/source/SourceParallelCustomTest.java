@@ -6,6 +6,9 @@ import org.apache.flink.streaming.api.functions.source.ParallelSourceFunction;
 
 import java.util.Random;
 
+/**
+ * ParallelSourceFunction
+ */
 public class SourceParallelCustomTest {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();

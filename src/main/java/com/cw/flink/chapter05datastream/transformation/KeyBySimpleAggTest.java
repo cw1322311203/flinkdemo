@@ -39,9 +39,9 @@ public class KeyBySimpleAggTest {
         );
 
         // 按键分组之后进行聚合，提取当前用户最近一次访问数据
-        /*
-            需要注意的是，keyBy 得到的结果将不再是 DataStream，而是会将 DataStream 转换为KeyedStream。KeyedStream
-            可以认为是“分区流”或者“键控流”，它是对 DataStream  按照 key 的一个逻辑分区，所以泛型有两个类型：除去当前流中的元素类型外，还需要指定 key 的类型。
+        /**
+         * 需要注意的是，keyBy得到的结果将不再是 DataStream，而是会将 DataStream 转换为KeyedStream。
+         * KeyedStream可以认为是“分区流”或者“键控流”，它是对DataStream按照key的一个逻辑分区，所以泛型有两个类型：除去当前流中的元素类型外，还需要指定 key 的类型。
          */
         stream.keyBy(new KeySelector<Event, String>() {
             @Override

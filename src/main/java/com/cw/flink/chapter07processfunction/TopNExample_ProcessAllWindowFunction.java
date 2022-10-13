@@ -1,4 +1,4 @@
-package com.cw.flink.chapter07;
+package com.cw.flink.chapter07processfunction;
 
 import com.cw.flink.chapter05datastream.source.ClickSource;
 import com.cw.flink.chapter05datastream.source.Event;
@@ -22,7 +22,6 @@ import java.util.HashMap;
 
 /**
  * @description: 使用 ProcessAllWindowFunction统计访问量前两名的url
- *
  * @author: chenwei
  * @date: 2022/9/9 17:10
  */
