@@ -3,6 +3,7 @@ package com.cw.flink.chapter05datastream.transformation;
 import com.cw.flink.chapter05datastream.source.Event;
 import org.apache.flink.api.java.functions.KeySelector;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
+import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 /**
@@ -18,6 +19,10 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
  * minBy()：与 min()类似，在输入流上针对指定字段求最小值。不同的是，min()只计算指定字段的最小值，其他字段会保留最初第一个数据的值；
  * 而minBy()则会返回包含字段最小值的整条数据。
  * maxBy() ：与 max() 类似， 在输入流上针对指定字段求最大值。两者区别与min()/minBy()完全一致。
+ *
+ * 一个聚合算子，会为每一个key 保存一个聚合的值，在Flink 中我们把它叫作“状态”（state）。
+ * 所以每当有一个新的数据输入，算子就会更新保存的聚合结果，并发送一个带有更新后聚合值的事件到下游算子。
+ * 对于无界流来说，这些状态是永远不会被清除的，所以我们使用聚合算子， 应该只用在含有有限个 key 的数据流上。
  * @author: chenwei
  * @date: 2022/9/1 15:45
  */
@@ -42,6 +47,9 @@ public class KeyBySimpleAggTest {
         /**
          * 需要注意的是，keyBy得到的结果将不再是 DataStream，而是会将 DataStream 转换为KeyedStream。
          * KeyedStream可以认为是“分区流”或者“键控流”，它是对DataStream按照key的一个逻辑分区，所以泛型有两个类型：除去当前流中的元素类型外，还需要指定 key 的类型。
+         * KeySelector<IN, KEY>
+         *    <IN> – 当前流中的元素类型
+         *    <KEY> – key 的类型
          */
         stream.keyBy(new KeySelector<Event, String>() {
             @Override
@@ -50,8 +58,13 @@ public class KeyBySimpleAggTest {
             }
         }).max("timestamp").print("max: ");
 
-
-        stream.keyBy(data -> data.user).maxBy("timestamp").print("maxBy: ");
+        /**
+         * 简单聚合算子返回的，同样是一个 SingleOutputStreamOperator，也就是从 KeyedStream 又转换成了常规的 DataStream。
+         * 所以可以这样理解：keyBy 和聚合是成对出现的，先分区、后聚合，得到的依然是一个 DataStream。而且经过简单聚合之后的数据流，元素的数据类型保持不变。
+         */
+        // 使用lambda表达式
+        SingleOutputStreamOperator<Event> maxKeyByStream = stream.keyBy(data -> data.user).maxBy("timestamp");
+        maxKeyByStream.print("maxBy: ");
 
         env.execute();
 

@@ -14,7 +14,7 @@ import org.apache.flink.util.Collector;
  * 当返回结果是 0 个的时候，就相当于对数据进行了过滤，
  * 当返回结果是 1 个的时候，相当于对数据进行了简单的转换操作。
  *
- * 注意：使用lambda表达式实现时，需要使用returns方法指定转换后类型
+ * TODO 注意：使用lambda表达式实现时，需要使用returns方法指定转换后类型
  * @author: chenwei
  * @date: 2022/9/1 15:11
  */
