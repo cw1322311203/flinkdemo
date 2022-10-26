@@ -8,7 +8,9 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.source.RichParallelSourceFunction;
 
 /**
- * @description:
+ * @description: “分区”（partitioning）操作就是要将数据进行重新分布，传递到不同的流分区去进行下一步处理。keyBy就是一种按照键的哈希值来进行重新分区的操作。
+ * 只不过这种分区操作只能保证把数据按key“分开”，至于分得均不均匀、每个 key 的数据具体会分到哪一区去，这些是完全无从控制的。
+ * 所以我们有时也说，keyBy 是一种逻辑分区（logical partitioning）操作。
  * @author:chenwei
  * @date:2022/9/2 10:59
  */
@@ -29,29 +31,29 @@ public class PartitionTest {
                 new Event("Bob", "./prod?id=3", 4200L)
         );
 
-        /*
-            1.随机分区（shuffle）
-            随机分区服从均匀分布（uniform distribution），所以可以把流中的数据随机打乱，均匀地传递到下游任务分区
+        /**
+         1.随机分区（shuffle）
+         随机分区服从均匀分布（uniform distribution），所以可以把流中的数据随机打乱，均匀地传递到下游任务分区
          */
         //stream.shuffle().print().setParallelism(4);
 
-        /*
-            2.轮询分区
-            轮询也是一种常见的重分区方式。简单来说就是“发牌”，按照先后顺序将数据做依次分发，
-            通过调用 DataStream 的.rebalance()方法，就可以实现轮询重分区
-            rebalance 使用的是Round-Robin 负载均衡算法，可以将输入流数据平均分配到下游的并行任务中去。
+        /**
+         2.轮询分区
+         轮询也是一种常见的重分区方式。简单来说就是“发牌”，按照先后顺序将数据做依次分发，
+         通过调用 DataStream 的.rebalance()方法，就可以实现轮询重分区
+         rebalance 使用的是Round-Robin 负载均衡算法，可以将输入流数据平均分配到下游的并行任务中去。
          */
         //stream.rebalance().print().setParallelism(4);
 
         // 默认就是轮询
         //stream.print().setParallelism(4);
 
-        /*
-            3.重缩放分区（rescale）
-            重缩放分区和轮询分区非常相似。当调用 rescale()方法时，其实底层也是使用Round-Robin算法进行轮询，
-            但是只会将数据轮询发送到下游并行任务的一部分中
-            也就是说，“发牌人”如果有多个，那么 rebalance 的方式是每个发牌人都面向所有人发牌；
-            而 rescale的做法是分成小团体，发牌人只给自己团体内的所有人轮流发牌。
+        /**
+         3.重缩放分区（rescale）
+         重缩放分区和轮询分区非常相似。当调用 rescale()方法时，其实底层也是使用Round-Robin算法进行轮询，
+         但是只会将数据轮询发送到下游并行任务的一部分中
+         也就是说，“发牌人”如果有多个，那么 rebalance 的方式是每个发牌人都面向所有人发牌；
+         而 rescale的做法是分成小团体，发牌人只给自己团体内的所有人轮流发牌。
          */
         env.addSource(new RichParallelSourceFunction<Integer>() {
                     @Override

@@ -20,6 +20,10 @@ public class FilterTest {
         );
 
         // 1.传入一个实现了FilterFunction类的对象
+        /**
+         * 对于大部分操作而言，都需要传入一个用户自定义函数（UDF），实现相关操作的接口，来完成处理逻辑的定义。
+         * Flink 暴露了所有UDF 函数的接口，具体实现方式为接口或者抽象类， 例如 MapFunction、FilterFunction、ReduceFunction 等。
+         */
         SingleOutputStreamOperator<Event> result1 = stream.filter(new MyFilter());
 
         // 2.传入一个匿名类实现FilterFunction接口
