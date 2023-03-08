@@ -1,4 +1,4 @@
-package com.cw.flink.chapter06watermark.window;
+package com.cw.flink.chapter06watermark.window.entity;
 
 import java.sql.Timestamp;
 

@@ -32,9 +32,9 @@ public class SinkToFileTest {
         );
 
         StreamingFileSink<String> streamingFileSink = StreamingFileSink.<String>forRowFormat(
-                new Path("./output"),
-                new SimpleStringEncoder<>("UTF-8")
-        )
+                        new Path("./output"),
+                        new SimpleStringEncoder<>("UTF-8")
+                )
                 .withRollingPolicy(
                         DefaultRollingPolicy.builder()
                                 .withMaxPartSize(1024 * 1024 * 1024)

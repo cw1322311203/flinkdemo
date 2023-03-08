@@ -35,24 +35,26 @@ public class TypeHintTest {
         );
 
         /**
-         * note map 函数使用 Lambda 表达式，返回简单类型，不需要进行类型声明
+         * map 函数使用 Lambda 表达式，返回简单类型，不需要进行类型声明
          */
         DataStream<String> stream1 = stream.map(event -> event.url);
         stream1.print("stream1");
 
         /**
-         * note 当使用 map() 函数返回 Flink 自定义的元组类型时需要进行类型声明
+         * 类似声明方式 1 Types
+         *
+         * 当使用 map() 函数返回 Flink 自定义的元组类型时需要进行类型声明
          * 下例中的函数签名 Tuple2<String, Long> map(Event value) 被类型擦除为 Tuple2 map(Event value)。
-         * 类似声明方式1 Types
+         *
          */
-        //使用 map 函数也会出现类似问题，以下代码会报错
+        // 使用 map 函数也会出现类似问题，以下代码会报错
         DataStream<Tuple2<String, Long>> stream2 = stream
                 .map(event -> Tuple2.of(event.user, 1L))
                 .returns(Types.TUPLE(Types.STRING, Types.LONG));
         stream2.print("stream2");
 
         /**
-         * 类型声明方式2  TypeHint
+         * 类型声明方式 2  TypeHint
          */
         DataStream<Tuple2<String, Long>> stream3 = stream
                 .map(event -> Tuple2.of(event.user, 1L))
@@ -61,7 +63,7 @@ public class TypeHintTest {
         stream3.print("stream3");
 
         /**
-         * note   flatMap 使用 Lambda 表达式，必须通过 returns 明确声明返回类型
+         * flatMap 使用 Lambda 表达式，必须通过 returns 明确声明返回类型
          * 对于像 flatMap() 这样的函数，它的函数签名 void flatMap(IN value, Collector<OUT> out)
          * 被 Java 编译器编译成了 void flatMap(IN value, Collector out)，
          * 也就是说将 Collector 的泛型信息擦除掉了。这样 Flink 就无法自动推断输出的类型信息了。

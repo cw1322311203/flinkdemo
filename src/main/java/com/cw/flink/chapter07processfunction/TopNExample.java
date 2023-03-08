@@ -3,7 +3,7 @@ package com.cw.flink.chapter07processfunction;
 import com.cw.flink.chapter05datastream.source.ClickSource;
 import com.cw.flink.chapter05datastream.source.Event;
 import com.cw.flink.chapter06watermark.window.UrlCountViewExample;
-import com.cw.flink.chapter06watermark.window.UrlViewCount;
+import com.cw.flink.chapter06watermark.window.entity.UrlViewCount;
 import org.apache.flink.api.common.eventtime.SerializableTimestampAssigner;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.common.state.ListState;

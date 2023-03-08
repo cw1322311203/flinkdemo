@@ -1,6 +1,7 @@
 package com.cw.flink.chapter06watermark.window;
 
 import com.cw.flink.chapter05datastream.source.Event;
+import com.cw.flink.chapter06watermark.window.entity.UrlViewCount;
 import org.apache.flink.api.common.eventtime.SerializableTimestampAssigner;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.common.functions.MapFunction;
